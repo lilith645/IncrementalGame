@@ -16,6 +16,7 @@ pub struct TextField {
   colour: Vector4<f32>,
   editable: bool,
   editing: bool,
+  hidden: bool,
 }
 
 
@@ -32,10 +33,11 @@ impl TextField {
       colour: colour,
       editable: false,
       editing: false,
+      hidden: false,
     }
   }
   
-  pub fn _new_text_field_editable(name: String, position: Vector2<f32>, size: Vector2<f32>, colour: Vector4<f32>, centered: bool, text: String, font: String) -> TextField {
+  pub fn new_text_field_editable(name: String, position: Vector2<f32>, size: Vector2<f32>, colour: Vector4<f32>, centered: bool, text: String, font: String) -> TextField {
     
     println!("editable made");
     TextField {
@@ -44,7 +46,7 @@ impl TextField {
     }
   }
   
-  pub fn _new_empty() -> TextField {
+  pub fn new_empty() -> TextField {
     TextField {
       name: "".to_string(),
       text: "".to_string(),
@@ -55,7 +57,8 @@ impl TextField {
       size: Vector2::new(0.0, 0.0),
       colour: Vector4::new(0.0, 0.0, 0.0, 0.0),
       editable: false,
-      editing: false
+      editing: false,
+      hidden: false,
     }
   }
   
@@ -69,7 +72,7 @@ impl TextField {
     math::box_collision(Vector4::new(center_x, center_y, width, height), Vector4::new(at_location.x, at_location.y, 1.0, 1.0))
   }
   
-  pub fn _get_all(&self) -> (String, String, String, bool, bool, Vector2<f32>, Vector2<f32>, Vector4<f32>) {
+  pub fn get_all(&self) -> (String, String, String, bool, bool, Vector2<f32>, Vector2<f32>, Vector4<f32>) {
     let name = self.name.to_string();
     let text = self.text.to_string();
     let font = self.font.to_string();
@@ -82,7 +85,15 @@ impl TextField {
     (name, text, font, wrap, centered, pos, size, colour)
   }
   
-  pub fn _wrap_text(mut self, should_wrap: bool) -> TextField {
+  pub fn hide(&mut self) {
+    self.hidden = true;
+  }
+  
+  pub fn show(&mut self) {
+    self.hidden = false;
+  }
+  
+  pub fn wrap_text(mut self, should_wrap: bool) -> TextField {
     self.wrap = should_wrap;
     self
   }
@@ -91,11 +102,11 @@ impl TextField {
     &self.name == name
   }
   
-  pub fn _set_colour(&mut self, new_colour: Vector4<f32>) {
+  pub fn set_colour(&mut self, new_colour: Vector4<f32>) {
     self.colour = new_colour;
   }
   
-  pub fn _set_name(&mut self, new_name: &String) {
+  pub fn set_name(&mut self, new_name: &String) {
     self.name = new_name.to_string();
   }
   
@@ -103,7 +114,7 @@ impl TextField {
     self.text = new_text;
   }
   
-  pub fn _set_text_size(&mut self, new_size: Vector2<f32>) { 
+  pub fn set_text_size(&mut self, new_size: Vector2<f32>) { 
     self.size = new_size;
   }
   
@@ -119,19 +130,23 @@ impl TextField {
     self.text.clone()
   }
   
-  pub fn _get_colour(&self) -> Vector4<f32> {
+  pub fn get_colour(&self) -> Vector4<f32> {
     self.colour
   }
   
-  pub fn _get_size(&self) -> f32 {
+  pub fn get_size(&self) -> f32 {
     self.size.x
   }
   
-  pub fn _get_name(&self) -> String {
+  pub fn get_name(&self) -> String {
     self.name.to_string()
   }
   
-  pub fn update(&mut self, _delta_time: f32, mouse_pos: Vector2<f32>, left_mouse: bool, keys_pressed_this_frame: &Vec<String>) {
+  pub fn update(&mut self, delta_time: f32, mouse_pos: Vector2<f32>, left_mouse: bool, keys_pressed_this_frame: &Vec<String>) {
+    if self.hidden {
+      return;
+    }
+    
     if self.editable {
       if self.editing {
         for i in 0..keys_pressed_this_frame.len() {
@@ -156,17 +171,21 @@ impl TextField {
   }
   
   pub fn draw(&self, draw_calls: &mut Vec<DrawCall>) {
+    if self.hidden {
+      return;
+    }
+    
     let pos = self.position;
-    let _size = self.size;
+    let size = self.size;
     let text = self.text.clone();
     let font = self.font.clone();
     let colour = self.colour;
     let _wrap = self.wrap;
     let size = self.size;
-    let _width = size.x*0.06*self.text.len() as f32;
+    let width = size.x*0.06*self.text.len() as f32;
     let height = size.y*0.15;
-    let _center_x = self.position.x;
-    let _center_y = self.position.y+height*0.5;
+    let center_x = self.position.x;
+    let center_y = self.position.y+height*0.5;
     
    // draw_calls.push(DrawCall::draw_coloured(Vector2::new(center_x,center_y), Vector2::new(width, height), Vector4::new(1.0, 1.0, 1.0, 1.0), 90.0));
     

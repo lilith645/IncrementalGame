@@ -82,7 +82,7 @@ impl Scene for LoadScreen {
     
     draw_calls.push(
       DrawCall::draw_text_basic(Vector2::new(width*0.45+50.0, height*0.6-100.0), 
-                                Vector2::new(1024.0, 1024.0),
+                                Vector2::new(512.0, 512.0),
                                 Vector4::new(0.0, 0.0, 0.0, 1.0),
                                 String::from("tah"),
                                 String::from("Arial"))

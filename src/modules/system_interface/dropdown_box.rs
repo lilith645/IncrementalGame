@@ -21,7 +21,7 @@ pub struct DropdownBox{
 }
 
 impl DropdownBox {
-   pub fn _new(name: String, position: Vector2<f32>, size: Vector2<f32>,  dropdown_size: f32, scroll_speed: f32,
+   pub fn new(name: String, position: Vector2<f32>, size: Vector2<f32>,  dropdown_size: f32, scroll_speed: f32,
              button_text_size: Vector2<f32>,  button_colour: Vector4<f32>, scroll_bar_width: f32, 
              scroll_bar_primay_colour: Vector4<f32>, scroll_bar_secondary_colour: Vector4<f32>,
              selected_name: String, selected_display_text: String, button_names: Vec<String>, button_text: Vec<String>, font: String) -> DropdownBox {
@@ -52,7 +52,7 @@ impl DropdownBox {
     let mut slider = None; 
     
     if size.y*button_names.len() as f32 > dropdown_size {
-      slider = Some(Slider::_new("Scrollbar".to_string(), scroll_bar_primay_colour, scroll_bar_secondary_colour, Vector2::new(position.x+size.x*0.5+scroll_bar_width*0.5, position.y+size.y*0.5-dropdown_size*0.5), Vector2::new(scroll_bar_width, dropdown_size-size.y*0.5), Vector2::new(scroll_bar_width*0.75, 15.0), 0.0, scroll_speed, true));
+      slider = Some(Slider::new("Scrollbar".to_string(), scroll_bar_primay_colour, scroll_bar_secondary_colour, Vector2::new(position.x+size.x*0.5+scroll_bar_width*0.5, position.y+size.y*0.5-dropdown_size*0.5), Vector2::new(scroll_bar_width, dropdown_size-size.y*0.5), Vector2::new(scroll_bar_width*0.75, 15.0), 0.0, scroll_speed, true));
     }
     DropdownBox {
       name: name,
@@ -68,7 +68,7 @@ impl DropdownBox {
     }
   }
   
-  pub fn _new_dynamic(name: String, position: Vector2<f32>, size: Vector2<f32>,  dropdown_size: f32, scroll_speed: f32,
+  pub fn new_dynamic(name: String, position: Vector2<f32>, size: Vector2<f32>,  dropdown_size: f32, scroll_speed: f32,
              button_text_size: Vector2<f32>,  button_colour: Vector4<f32>, scroll_bar_width: f32, 
              scroll_bar_primay_colour: Vector4<f32>, scroll_bar_secondary_colour: Vector4<f32>,
              button_names: Vec<String>, button_text: Vec<String>, font: String) -> DropdownBox {
@@ -99,7 +99,7 @@ impl DropdownBox {
     let mut slider = None; 
     
     if size.y*button_names.len() as f32 > dropdown_size {
-      slider = Some(Slider::_new("Scrollbar".to_string(), scroll_bar_primay_colour, scroll_bar_secondary_colour, Vector2::new(position.x+size.x*0.5+scroll_bar_width*0.5, position.y+size.y*0.5-dropdown_size*0.5), Vector2::new(scroll_bar_width, dropdown_size-size.y*0.5), Vector2::new(scroll_bar_width*0.75, 15.0), 0.0, scroll_speed, true));
+      slider = Some(Slider::new("Scrollbar".to_string(), scroll_bar_primay_colour, scroll_bar_secondary_colour, Vector2::new(position.x+size.x*0.5+scroll_bar_width*0.5, position.y+size.y*0.5-dropdown_size*0.5), Vector2::new(scroll_bar_width, dropdown_size-size.y*0.5), Vector2::new(scroll_bar_width*0.75, 15.0), 0.0, scroll_speed, true));
     }
     
     DropdownBox {
@@ -116,15 +116,15 @@ impl DropdownBox {
     }
   }
   
-  pub fn _name_matches(&self, name: &String) -> bool {
+  pub fn name_matches(&self, name: &String) -> bool {
     &self.name == name
   }
   
-  pub fn _get_selected_name(&self) -> String {
+  pub fn get_selected_name(&self) -> String {
     self.selected_button.get_name()
   }
   
-  pub fn _option_pressed_by_name(&self, name: &String) -> bool {
+  pub fn option_pressed_by_name(&self, name: &String) -> bool {
     let mut pressed = false;
     for button in &self.buttons {
       if button.name_matches(name) {
@@ -135,7 +135,7 @@ impl DropdownBox {
     pressed
   }
   
-  pub fn _dropped_down(&self) -> bool {
+  pub fn dropped_down(&self) -> bool {
     self.is_dropped_down
   }
   
@@ -149,10 +149,10 @@ impl DropdownBox {
     }
   }
   
-  pub fn _get_display_names(&self) -> Vec<String> {
+  pub fn get_display_names(&self) -> Vec<String> {
     let mut display_names = Vec::with_capacity(self.buttons.len());
     for button in &self.buttons {
-      display_names.push(button._get_text());
+      display_names.push(button.get_text());
     }
     
     display_names

@@ -1,7 +1,6 @@
 use maat_graphics::DrawCall;
 use maat_graphics::math;
 
-use crate::modules::system_interface::asserts;
 use crate::modules::system_interface::Button;
 
 use cgmath::Vector2;
@@ -20,21 +19,17 @@ pub struct Slider {
 }
 
 impl Slider {
-  pub fn _new(name: String, primary_colour: Vector4<f32>, secondary_colour: Vector4<f32>, position: Vector2<f32>,
+  pub fn new(name: String, primary_colour: Vector4<f32>, secondary_colour: Vector4<f32>, position: Vector2<f32>,
              bar_size: Vector2<f32>, ball_size: Vector2<f32>, value: f32, scroll_speed: f32, vertical: bool) -> Slider {
     debug_assert!(!(value > 1.0 || value < 0.0), "Error slider value can only be between 0 and 1");
-    asserts::check_colour_range_vec4(&primary_colour);
-    asserts::check_colour_range_vec4(&secondary_colour);
-    asserts::vec2_greater_than(&bar_size, &0.0, "Bar size must be greater than 0");
-    asserts::vec2_greater_than(&ball_size, &0.0, "Bar size must be greater than 0");
     let mut value = value;
     let name = name;
     let button;
     if vertical {
       value = value;
-      button = Button::_new_button_no_text(name.to_string(), Vector2::new(position.x, 0.0), ball_size, secondary_colour, secondary_colour, false);
+      button = Button::new_button_no_text(name.to_string(), Vector2::new(position.x, 0.0), ball_size, secondary_colour, secondary_colour, false);
     } else {
-      button = Button::_new_button_no_text(name.to_string(), Vector2::new(0.0, position.y), ball_size, secondary_colour, secondary_colour, false);
+      button = Button::new_button_no_text(name.to_string(), Vector2::new(0.0, position.y), ball_size, secondary_colour, secondary_colour, false);
     }
     
     let mut slider = Slider {
@@ -66,20 +61,20 @@ impl Slider {
     self.value
   }
   
-  pub fn _get_bar_location(&self) -> Vector2<f32> {
+  pub fn get_bar_location(&self) -> Vector2<f32> {
     self.position
   }
   
-  pub fn _get_ball_location(&self) -> Vector2<f32> {
+  pub fn get_ball_location(&self) -> Vector2<f32> {
     println!("Value: {}", self.value);
     self.ball.get_location()
   }
   
-  pub fn _get_bar_size(&self) -> Vector2<f32> {
+  pub fn get_bar_size(&self) -> Vector2<f32> {
     self.bar_size
   }
   
-  pub fn _get_ball_size(&self) -> Vector2<f32> {
+  pub fn get_ball_size(&self) -> Vector2<f32> {
     self.ball.get_size()
   }
   
@@ -93,11 +88,11 @@ impl Slider {
     let pos = self.position;
      
     if self.is_vertical {
-       let corrected_bar_height = bar_size.y-ball_size.y;
+       let corrected_bar_height = (bar_size.y-ball_size.y);
        let new_y = pos.y-corrected_bar_height*0.5 + (corrected_bar_height*value);
        self.ball.set_location(Vector2::new(x, new_y));
     } else {
-       let corrected_bar_width = bar_size.x-ball_size.x;
+       let corrected_bar_width = (bar_size.x-ball_size.x);
        let new_x = pos.x+corrected_bar_width*0.5 - (corrected_bar_width*value);
        self.ball.set_location(Vector2::new(new_x, y));
     }
@@ -105,7 +100,7 @@ impl Slider {
     self.value = value;
   }
   
-  pub fn scroll(&mut self, _delta_time: f32, scroll_delta: f32) {
+  pub fn scroll(&mut self, delta_time: f32, scroll_delta: f32) {
     let mut new_value = self.value;
     let offset = scroll_delta*self.scroll_speed;
     new_value += offset;
@@ -142,8 +137,8 @@ impl Slider {
         self.set_value(value);
       } else {
         let mut loc = Vector2::new(self.ball.get_location().x, mouse_pos.y); 
-        let lower_pos = self.position-self.bar_size*0.5;
-        let higher_pos = self.position+self.bar_size*0.5;
+        let mut lower_pos = self.position-self.bar_size*0.5;
+        let mut higher_pos = self.position+self.bar_size*0.5;
         if loc.y < lower_pos.y+self.ball.get_size().y*0.5 {
           loc.y = lower_pos.y+self.ball.get_size().y*0.5;
         }
@@ -151,8 +146,8 @@ impl Slider {
           loc.y = higher_pos.y-self.ball.get_size().y*1.5;
         }
         
-        let dist = loc.y - lower_pos.y;
-        let max_dist = self.bar_size.y-self.ball.get_size().y;
+        let dist = (loc.y - lower_pos.y);
+        let max_dist = (self.bar_size.y-self.ball.get_size().y);
         let value = dist/max_dist;
         
         self.set_value(value);
@@ -164,7 +159,7 @@ impl Slider {
     self.ball.update(delta_time, mouse_pos, left_mouse);
   }
   
-  pub fn _name_matches(&self, name: &String) -> bool {
+  pub fn name_matches(&self, name: &String) -> bool {
     &self.name == name
   }
   

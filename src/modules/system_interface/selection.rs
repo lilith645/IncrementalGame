@@ -7,7 +7,7 @@ use cgmath::Vector4;
 
 #[derive(Clone, PartialEq)]
 enum Direction {
-  _Up,
+  Up,
   _Down,
   _Right,
   _Left,
@@ -22,16 +22,16 @@ pub struct Selection {
 }
 
 impl Selection {
-  fn _new_empty(position: Vector2<f32>, size: Vector2<f32>, _direction: Direction, buttons: Vec<Button>) -> Selection {
+  fn new_empty(position: Vector2<f32>, size: Vector2<f32>, _direction: Direction, buttons: Vec<Button>) -> Selection {
     Selection {
       _position: position,
       _size: size,
-      _direction: Direction::_Up,
+      _direction: Direction::Up,
       buttons: buttons,
     }
   }
   
-  pub fn _new_upwards(position: Vector2<f32>, size: Vector2<f32>, relative_position: Vector2<f32>, 
+  pub fn new_upwards(position: Vector2<f32>, size: Vector2<f32>, relative_position: Vector2<f32>, 
                      text_size: Vector2<f32>, text_colour: Vector4<f32>, spacing: f32, 
                      option_names: Vec<String>, option_colours: Vec<Vector4<f32>>, selected_background: Vector4<f32>, 
                      center_text: bool, text: Vec<String>, font: String) -> Selection {
@@ -40,8 +40,8 @@ impl Selection {
     for i in 0..option_names.len() {
       let num = i as f32;
       let position = {
-        let temp_pos = position;
-        let offset;
+        let mut temp_pos = position;
+        let mut offset;
         offset = Vector2::new(0.0, size.y*num + spacing*num);
         (temp_pos + offset)
       };
@@ -63,30 +63,30 @@ impl Selection {
       
       buttons.push(Button::new_button(option_names[i].clone(), position, size, relative_position, text_size, 
                     text_colour, pressed_colour, option_colour, true, center_text, text[i].clone(), font.clone())
-                    ._toggle_background(size+Vector2::new(5.0,5.0), selected_background));
+                    .toggle_background(size+Vector2::new(5.0,5.0), selected_background));
     }
     
     buttons[0].toggle_on();
-    Selection::_new_empty(position, size, Direction::_Up, buttons)
+    Selection::new_empty(position, size, Direction::Up, buttons)
   }
   
-  pub fn _new_upwards_textured(position: Vector2<f32>, size: Vector2<f32>, spacing: f32, option_names: Vec<String>, option_textures: Vec<String>, selected_background: Vector4<f32>) -> Selection {
+  pub fn new_upwards_textured(position: Vector2<f32>, size: Vector2<f32>, spacing: f32, option_names: Vec<String>, option_textures: Vec<String>, selected_background: Vector4<f32>) -> Selection {
     let mut buttons = Vec::with_capacity(option_names.len());
     
     for i in 0..option_names.len() {
       let num = i as f32;
       let position = {
-        let temp_pos = position;
-        let offset;
+        let mut temp_pos = position;
+        let mut offset;
         offset = Vector2::new(0.0, size.y*num + spacing*num);
         (temp_pos + offset)
       };
       
-      buttons.push(Button::new_textured_button(option_names[i].clone(), position, size, option_textures[i].clone(), option_textures[i].clone(), true)._toggle_background(size+Vector2::new(5.0,5.0), selected_background));
+      buttons.push(Button::new_textured_button(option_names[i].clone(), position, size, option_textures[i].clone(), option_textures[i].clone(), true).toggle_background(size+Vector2::new(5.0,5.0), selected_background));
     }
     
     buttons[0].toggle_on();
-    Selection::_new_empty(position, size, Direction::_Up, buttons)
+    Selection::new_empty(position, size, Direction::Up, buttons)
   }
   /*
   pub fn _new_left(position: Vector2<f32>, size: Vector2<f32>, spacing: f32, options: Vec<String>) -> Selection {
@@ -110,7 +110,7 @@ impl Selection {
     }
   }*/
   
-  pub fn _is_touching_button(&self, index: usize, against: Vector2<f32>) -> bool {
+  pub fn is_touching_button(&self, index: usize, against: Vector2<f32>) -> bool {
     if index >= self.buttons.len() {
       return false;
     }

@@ -18,7 +18,7 @@ use cgmath::{Vector2, Vector4};
 use std::time;
 
 const MAJOR: u32 = 0;
-const MINOR: u32 = 1;
+const MINOR: u32 = 2;
 const PATCH: u32 = 0;
 
 fn benchmark(draw_calls: &mut Vec<DrawCall>, dimensions: [f32; 2]) {
@@ -44,8 +44,8 @@ fn fps_overlay(draw_calls: &mut Vec<DrawCall>, dimensions: [f32; 2], fps: f64) {
   let  mut fps = fps.to_string();
   fps.truncate(6);
   
-  draw_calls.push(DrawCall::draw_text_basic(Vector2::new(64.0, dimensions[1]-32.0), 
-                                           Vector2::new(96.0, 96.0), 
+  draw_calls.push(DrawCall::draw_text_basic(Vector2::new(32.0, dimensions[1]-32.0), 
+                                           Vector2::new(64.0, 64.0), 
                                            Vector4::new(1.0, 1.0, 1.0, 1.0), 
                                            "fps: ".to_string() + &fps, 
                                            "Arial".to_string()));
@@ -89,7 +89,6 @@ fn main() {
     fps_timer += delta_time;
     if fps_timer > 1.0 {
       last_fps = frame_counter as f64 * (1.0/fps_timer);
-      ms = (fps_timer*1000.0) / frame_counter as f64;
       fps_timer = 0.0;
       frame_counter = 0;
     }
@@ -110,7 +109,7 @@ fn main() {
     game.update(delta_time as f32);
     
     benchmark(&mut draw_calls, dimensions);
-    fps_overlay(&mut draw_calls, dimensions, last_fps, ms, update_ms);
+    fps_overlay(&mut draw_calls, dimensions, last_fps);
     
     let model_details = graphics.pre_draw();
     graphics.draw(&draw_calls, delta_time as f32);

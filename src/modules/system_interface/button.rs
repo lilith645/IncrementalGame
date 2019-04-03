@@ -1,11 +1,10 @@
 use maat_graphics::DrawCall;
 use maat_graphics::math;
 
+use crate::modules::system_interface::TextField;
+
 use cgmath::Vector2;
 use cgmath::Vector4;
-
-use crate::modules::system_interface::TextField;
-use crate::modules::system_interface::asserts;
 
 #[derive(Clone, PartialEq)]
 pub struct TexturedButton {
@@ -23,7 +22,7 @@ impl TexturedButton {
     }
   }
   
-  pub fn _new_empty() -> TexturedButton {
+  pub fn new_empty() -> TexturedButton {
     TexturedButton {
       pressed: "".to_string(),
       unpressed: "".to_string(),
@@ -52,7 +51,7 @@ impl ColouredButton {
     }
   }
   
-  pub fn _new_no_text(pressed: Vector4<f32>, unpressed: Vector4<f32>) -> ColouredButton {
+  pub fn new_no_text(pressed: Vector4<f32>, unpressed: Vector4<f32>) -> ColouredButton {
     ColouredButton {
       pressed: pressed,
       unpressed: unpressed,
@@ -60,7 +59,7 @@ impl ColouredButton {
     }
   }
   
-  pub fn _new_empty() -> ColouredButton {
+  pub fn new_empty() -> ColouredButton {
     ColouredButton {
       pressed: Vector4::new(0.0, 0.0, 0.0, 0.0),
       unpressed: Vector4::new(0.0, 0.0, 0.0, 0.0),
@@ -76,7 +75,7 @@ pub enum ButtonType {
 }
 
 impl ButtonType {
-  pub fn _get_colours(&self) -> Option<(Vector4<f32>, Vector4<f32>)>{
+  pub fn get_colours(&self) -> Option<(Vector4<f32>, Vector4<f32>)>{
     let colours;
     match self {
       ButtonType::Coloured(details) => {
@@ -84,14 +83,14 @@ impl ButtonType {
         let unpressed = details.unpressed;
         colours = Some((pressed, unpressed));
       },
-      ButtonType::Textured(_details) => {
+      ButtonType::Textured(details) => {
         colours = None;
       }
     }
     colours
   }
   
-  pub fn _get_text(&self) -> String {
+  pub fn get_text(&self) -> String {
     let mut text = "".to_string();
     
     match self {
@@ -109,7 +108,7 @@ impl ButtonType {
     text
   }
   
-  pub fn _add_textfield(&mut self, textfield: TextField) {
+  pub fn add_textfield(&mut self, textfield: TextField) {
     match self {
       ButtonType::Coloured(details) => {
         details.text_field = Some(textfield);
@@ -135,6 +134,7 @@ pub struct Button {
   pressed_last_frame: bool, // Left mouse button pressed last frame
   released_this_frame: bool, // Left mouse button released this frame
   should_update: bool,
+  hidden: bool,
 }
 
 impl Button {
@@ -142,12 +142,6 @@ impl Button {
                     relative_position: Vector2<f32>, text_size: Vector2<f32>, 
                     text_colour: Vector4<f32>, pressed: Vector4<f32>, unpressed: Vector4<f32>, 
                     is_toggle: bool, center_text: bool, text: String, font: String) -> Button {
-    asserts::vec2_greater_than(&size, &0.0, "Button size is required to be larger than 0");
-    asserts::vec2_greater_than(&text_size, &0.0, "Text size of button is required to be larger than 0");
-    asserts::check_colour_range_vec4(&text_colour);
-    asserts::check_colour_range_vec4(&pressed);
-    asserts::check_colour_range_vec4(&unpressed);
-
     let pos = (position-size*0.5) + relative_position;
     let name = name;
     Button {
@@ -164,20 +158,18 @@ impl Button {
       pressed_last_frame: false,
       released_this_frame: false,
       should_update: true,
+      hidden: false,
     }
   }
   
- pub fn _new_button_no_text(name: String, position: Vector2<f32>, size: Vector2<f32>, 
+ pub fn new_button_no_text(name: String, position: Vector2<f32>, size: Vector2<f32>, 
                            pressed: Vector4<f32>, unpressed: Vector4<f32>, is_toggle: bool) -> Button {
-    asserts::vec2_greater_than(&size, &0.0, "Button size is required to be larger than 0");
-    asserts::check_colour_range_vec4(&pressed);
-    asserts::check_colour_range_vec4(&unpressed);
     let name = name;
     Button {
       name: name.to_string(),
       position: position,
       size: size,
-      button_type: ButtonType::Coloured(ColouredButton::_new_no_text(pressed, unpressed)),
+      button_type: ButtonType::Coloured(ColouredButton::new_no_text(pressed, unpressed)),
       is_toggle: is_toggle,
       toggled: false,
       has_background: false,
@@ -186,20 +178,18 @@ impl Button {
       pressed_last_frame: false,
       released_this_frame: false,
       should_update: true,
+      hidden: false,
     }
   }
   
- pub fn _new_button_no_text_with_background(name: String, position: Vector2<f32>, size: Vector2<f32>, 
+ pub fn new_button_no_text_with_background(name: String, position: Vector2<f32>, size: Vector2<f32>, 
                            pressed: Vector4<f32>, unpressed: Vector4<f32>, is_toggle: bool, background_colour: Vector4<f32>, background_size: Vector2<f32>) -> Button {
-    asserts::vec2_greater_than(&size, &0.0, "Button size is required to be larger than 0");
-    asserts::check_colour_range_vec4(&pressed);
-    asserts::check_colour_range_vec4(&unpressed);
     let name = name;
     Button {
       name: name.to_string(),
       position: position,
       size: size,
-      button_type: ButtonType::Coloured(ColouredButton::_new_no_text(pressed, unpressed)),
+      button_type: ButtonType::Coloured(ColouredButton::new_no_text(pressed, unpressed)),
       is_toggle: is_toggle,
       toggled: false,
       has_background: true,
@@ -208,11 +198,11 @@ impl Button {
       pressed_last_frame: false,
       released_this_frame: false,
       should_update: true,
+      hidden: false,
     }
   }
   
   pub fn new_textured_button(name: String, position: Vector2<f32>, size: Vector2<f32>, pressed: String, unpressed: String, is_toggle: bool) -> Button {
-    asserts::vec2_greater_than(&size, &0.0, "Button size is required to be larger than 0");
     Button {
       name: name,
       position: position,
@@ -226,11 +216,11 @@ impl Button {
       pressed_last_frame: false,
       released_this_frame: false,
       should_update: true,
+      hidden: false,
     }
   }
   
-  pub fn _new_textured_button_with_background(name: String, position: Vector2<f32>, size: Vector2<f32>, pressed: String, unpressed: String, is_toggle: bool, background_colour: Vector4<f32>, background_size: Vector2<f32>) -> Button {
-    asserts::vec2_greater_than(&size, &0.0, "Button size is required to be larger than 0");
+  pub fn new_textured_button_with_background(name: String, position: Vector2<f32>, size: Vector2<f32>, pressed: String, unpressed: String, is_toggle: bool, background_colour: Vector4<f32>, background_size: Vector2<f32>) -> Button {
     Button {
       name: name,
       position: position,
@@ -244,15 +234,16 @@ impl Button {
       pressed_last_frame: false,
       released_this_frame: false,
       should_update: true,
+      hidden: false,
     }
   }
   
-  pub fn _new_empty() -> Button {
+  pub fn new_empty() -> Button {
     Button {
       name: "".to_string(),
       position: Vector2::new(0.0, 0.0),
       size: Vector2::new(0.0, 0.0),
-      button_type: ButtonType::Coloured(ColouredButton::_new_empty()),
+      button_type: ButtonType::Coloured(ColouredButton::new_empty()),
       is_toggle: false,
       toggled: false,
       has_background: false,
@@ -261,10 +252,11 @@ impl Button {
       pressed_last_frame: false,
       released_this_frame: false,
       should_update: true,
+      hidden: false,
     }
   }
   
-  pub fn _get_all(&self) -> (String, Vector2<f32>, Vector2<f32>, ButtonType, bool, bool, bool, Vector4<f32>, Vector2<f32>, bool, bool, bool) {
+  pub fn get_all(&self) -> (String, Vector2<f32>, Vector2<f32>, ButtonType, bool, bool, bool, Vector4<f32>, Vector2<f32>, bool, bool, bool) {
     let name = self.name.to_string();
     let pos = self.position;
     let size = self.size;
@@ -281,8 +273,8 @@ impl Button {
     (name, pos, size, button_type, is_toggle, toggled, has_background, background_colour, background_size, pressed_last_frame, released_this_frame, should_update)
   }
   
-  pub fn _add_textfield(&mut self, textfield: TextField) {
-    self.button_type._add_textfield(textfield);
+  pub fn add_textfield(&mut self, textfield: TextField) {
+    self.button_type.add_textfield(textfield);
   }
   
   /*
@@ -317,13 +309,20 @@ impl Button {
     self.size
   }
   
-  pub fn _get_text(&self) -> String {
-    self.button_type._get_text()
+  pub fn get_text(&self) -> String {
+    self.button_type.get_text()
   }
   
-  pub fn _set_size(&mut self, new_size: Vector2<f32>) {
-    asserts::vec2_greater_than(&new_size, &0.0, "Button size needs to be greater than 0,0");
+  pub fn set_size(&mut self, new_size: Vector2<f32>) {
     self.size = new_size;
+  }
+  
+  pub fn hide(&mut self) {
+    self.hidden = true;
+  }
+  
+  pub fn show(&mut self) {
+    self.hidden = false;
   }
   
   pub fn get_text_location(&self) -> Vector2<f32> {
@@ -399,8 +398,7 @@ impl Button {
     self
   }
   
-  pub fn _toggle_background(mut self, size: Vector2<f32>, colour: Vector4<f32>) -> Button {
-    asserts::check_colour_range_vec4(&colour);
+  pub fn toggle_background(mut self, size: Vector2<f32>, colour: Vector4<f32>) -> Button {
     self.background_colour = colour;
     self.background_size = size;
     self.has_background = true;
@@ -424,7 +422,11 @@ impl Button {
     selected
   }
   
-  pub fn _stop_updating(&mut self) {
+  pub fn start_updating(&mut self) {
+    self.should_update = true;
+  }
+  
+  pub fn stop_updating(&mut self) {
     self.should_update = false;
   }
   
@@ -464,18 +466,15 @@ impl Button {
     &self.name == name
   }
   
-  pub fn _set_name(&mut self, name: &String) {
+  pub fn set_name(&mut self, name: &String) {
     self.name = name.clone();
   }
   
-  pub fn _get_button_colours(&self) -> Option<(Vector4<f32>, Vector4<f32>)> {
-    self.button_type._get_colours()
+  pub fn get_button_colours(&self) -> Option<(Vector4<f32>, Vector4<f32>)> {
+    self.button_type.get_colours()
   }
   
-  pub fn _set_colour(&mut self, pressed: Vector4<f32>, unpressed: Vector4<f32>) {
-    asserts::check_colour_range_vec4(&pressed);
-    asserts::check_colour_range_vec4(&unpressed);
-    
+  pub fn set_colour(&mut self, pressed: Vector4<f32>, unpressed: Vector4<f32>) {
     match &mut self.button_type {
       ButtonType::Coloured(details) => {
         details.pressed = pressed;
@@ -490,7 +489,7 @@ impl Button {
   }
   
   pub fn update(&mut self, _delta_time: f32, mouse_pos: Vector2<f32>, left_mouse: bool) {
-    if !self.should_update {
+    if !self.should_update || self.hidden {
       return;
     }
     
@@ -527,6 +526,10 @@ impl Button {
   }
   
   pub fn draw(&self, draw_calls: &mut Vec<DrawCall>) {
+    if self.hidden {
+      return;
+    }
+    
     if self.has_background && self.is_toggle && self.toggled {
       let pos = self.position;
       let size = self.background_size;
@@ -552,13 +555,13 @@ impl Button {
         draw_calls.push(DrawCall::draw_textured(pos, size, 90.0, texture));
       },
       ButtonType::Coloured(ref data) => {
-        let colour;
+        let mut colour;
         if is_pressed {
           colour = data.pressed;
         } else {
           colour = data.unpressed;
         }
-        draw_calls.push(DrawCall::draw_coloured(pos, size-Vector2::new(1.0, 1.0), colour, 90.0));
+        draw_calls.push(DrawCall::draw_coloured(Vector2::new(pos.x, pos.y), size-Vector2::new(1.0, 1.0), colour, 90.0));
         if let Some(text) = &data.text_field {
           text.draw(draw_calls);
         }

@@ -40,7 +40,7 @@ impl Widget {
     }
   }
   
-  pub fn _new_empty() -> Widget {
+  pub fn new_empty() -> Widget {
     Widget {
       _name: "".to_string(),
       position: Vector2::new(0.0, 0.0),
@@ -55,7 +55,7 @@ impl Widget {
     }
   }
   
-  pub fn _new_all(name: String, position: Vector2<f32>, size: Vector2<f32>, colour: Vector4<f32>, textfields: Vec<TextField>, buttons: Vec<Button>, selections: Vec<Selection>, sliders: Vec<Slider>, dropdown_boxs: Vec<DropdownBox>) -> Widget {
+  pub fn new_all(name: String, position: Vector2<f32>, size: Vector2<f32>, colour: Vector4<f32>, textfields: Vec<TextField>, buttons: Vec<Button>, selections: Vec<Selection>, sliders: Vec<Slider>, dropdown_boxs: Vec<DropdownBox>) -> Widget {
     Widget {
       _name: name,
       position: position,
@@ -70,17 +70,17 @@ impl Widget {
     }
   }
   
-  pub fn _with_upwards_selection(mut self, relative_position: Vector2<f32>, option_size: Vector2<f32>, relative_text_position: Vector2<f32>, text_size: Vector2<f32>, text_colour: Vector4<f32>, spacing: f32, option_names: Vec<String>, option_colours: Vec<Vector4<f32>>, selected_background: Vector4<f32>, center_text: bool, text: Vec<String>, font: String) -> Widget {
+  pub fn with_upwards_selection(mut self, relative_position: Vector2<f32>, option_size: Vector2<f32>, relative_text_position: Vector2<f32>, text_size: Vector2<f32>, text_colour: Vector4<f32>, spacing: f32, option_names: Vec<String>, option_colours: Vec<Vector4<f32>>, selected_background: Vector4<f32>, center_text: bool, text: Vec<String>, font: String) -> Widget {
     let pos = (self.position-self.size*0.5) + relative_position;
-    self.selections.push(Selection::_new_upwards(pos, option_size, relative_text_position, text_size, 
+    self.selections.push(Selection::new_upwards(pos, option_size, relative_text_position, text_size, 
                                                 text_colour, spacing, option_names, option_colours, 
                                                 selected_background, center_text, text, font));
     self
   }
   
-  pub fn _with_upwards_selection_textured(mut self, relative_position: Vector2<f32>, option_size: Vector2<f32>, spacing: f32, option_names: Vec<String>, option_textures: Vec<String>) -> Widget {
+  pub fn with_upwards_selection_textured(mut self, relative_position: Vector2<f32>, option_size: Vector2<f32>, spacing: f32, option_names: Vec<String>, option_textures: Vec<String>) -> Widget {
     let pos = (self.position-self.size*0.5) + relative_position;
-    self.selections.push(Selection::_new_upwards_textured(pos, option_size, spacing, option_names, option_textures, Vector4::new(0.0, 0.0, 1.0, 1.0)));
+    self.selections.push(Selection::new_upwards_textured(pos, option_size, spacing, option_names, option_textures, Vector4::new(0.0, 0.0, 1.0, 1.0)));
     self
   }
   
@@ -93,7 +93,7 @@ impl Widget {
     self
   }
   
-  pub fn _with_textured_button(mut self, relative_position: Vector2<f32>, button_size: Vector2<f32>, button_name: String, pressed_button_texture: String, unpressed_button_texture: String) -> Widget {
+  pub fn with_textured_button(mut self, relative_position: Vector2<f32>, button_size: Vector2<f32>, button_name: String, pressed_button_texture: String, unpressed_button_texture: String) -> Widget {
     let pos = (self.position-self.size*0.5) + relative_position;
     self.buttons.push(Button::new_textured_button(button_name, pos, button_size, pressed_button_texture, unpressed_button_texture, false));
     self
@@ -105,27 +105,27 @@ impl Widget {
     self
   }
   
-  pub fn _with_slider(mut self, relative_position: Vector2<f32>, bar_size: Vector2<f32>, ball_size: Vector2<f32>, slider_name: String, primary_colour: Vector4<f32>, secondary_colour: Vector4<f32>, value: f32, scroll_speed: f32, vertical: bool) -> Widget {
+  pub fn with_slider(mut self, relative_position: Vector2<f32>, bar_size: Vector2<f32>, ball_size: Vector2<f32>, slider_name: String, primary_colour: Vector4<f32>, secondary_colour: Vector4<f32>, value: f32, scroll_speed: f32, vertical: bool) -> Widget {
     let pos = (self.position-self.size*0.5) + relative_position;
-    self.sliders.push(Slider::_new(slider_name, primary_colour, secondary_colour, pos, bar_size, ball_size, value, scroll_speed, vertical));
+    self.sliders.push(Slider::new(slider_name, primary_colour, secondary_colour, pos, bar_size, ball_size, value, scroll_speed, vertical));
     self
   }
   
-  pub fn _with_dropdown_box(mut self, name: String, relative_position: Vector2<f32>, size: Vector2<f32>, 
+  pub fn with_dropdown_box(mut self, name: String, relative_position: Vector2<f32>, size: Vector2<f32>, 
                            dropdown_size: f32, scroll_speed: f32, button_text_size: Vector2<f32>, button_colour: Vector4<f32>,
                            scroll_bar_width: f32, scroll_bar_primay_colour: Vector4<f32>, scroll_bar_secondary_colour: Vector4<f32>, 
                            selected_name: String, selected_text: String, button_names: Vec<String>, button_text: Vec<String>, font: String) -> Widget {
     let pos = (self.position-self.size*0.5) + relative_position;
-    self.dropdown_boxs.push(DropdownBox::_new(name, pos, size, dropdown_size, scroll_speed, button_text_size, button_colour, scroll_bar_width, scroll_bar_primay_colour, scroll_bar_secondary_colour, selected_name, selected_text, button_names, button_text, font));
+    self.dropdown_boxs.push(DropdownBox::new(name, pos, size, dropdown_size, scroll_speed, button_text_size, button_colour, scroll_bar_width, scroll_bar_primay_colour, scroll_bar_secondary_colour, selected_name, selected_text, button_names, button_text, font));
     self
   }
   
-  pub fn _with_dropdown_box_dynamic(mut self, name: String, relative_position: Vector2<f32>, size: Vector2<f32>, 
+  pub fn with_dropdown_box_dynamic(mut self, name: String, relative_position: Vector2<f32>, size: Vector2<f32>, 
                            dropdown_size: f32, scroll_speed: f32, button_text_size: Vector2<f32>, button_colour: Vector4<f32>,
                            scroll_bar_width: f32, scroll_bar_primay_colour: Vector4<f32>, scroll_bar_secondary_colour: Vector4<f32>, 
                            button_names: Vec<String>, button_text: Vec<String>, font: String) -> Widget {
     let pos = (self.position-self.size*0.5) + relative_position;
-    self.dropdown_boxs.push(DropdownBox::_new_dynamic(name, pos, size, dropdown_size, scroll_speed, button_text_size, button_colour, scroll_bar_width, scroll_bar_primay_colour, scroll_bar_secondary_colour, button_names, button_text, font));
+    self.dropdown_boxs.push(DropdownBox::new_dynamic(name, pos, size, dropdown_size, scroll_speed, button_text_size, button_colour, scroll_bar_width, scroll_bar_primay_colour, scroll_bar_secondary_colour, button_names, button_text, font));
     self
   }
   
@@ -141,9 +141,9 @@ impl Widget {
     self
   }
   
-  pub fn _with_text_field_editable(mut self, text_name: String, relative_position: Vector2<f32>, text_size: Vector2<f32>, text_colour: Vector4<f32>, text: String, font: String) -> Widget {
+  pub fn with_text_field_editable(mut self, text_name: String, relative_position: Vector2<f32>, text_size: Vector2<f32>, text_colour: Vector4<f32>, text: String, font: String) -> Widget {
     let pos = (self.position-self.size*0.5) + relative_position;
-    self.text_fields.push(TextField::_new_text_field_editable(text_name, pos, text_size, text_colour, false, text, font));
+    self.text_fields.push(TextField::new_text_field_editable(text_name, pos, text_size, text_colour, false, text, font));
     
     self
   }
@@ -164,7 +164,7 @@ impl Widget {
     math::box_collision(Vector4::new(center_x, center_y, width, height), Vector4::new(at_location.x, at_location.y, 1.0, 1.0))
   }
   
-  pub fn _clear_widget(&mut self) {
+  pub fn clear_widget(&mut self) {
     self.text_fields.clear();
     self.buttons.clear();
     self.selections.clear();
@@ -172,7 +172,7 @@ impl Widget {
     self.dropdown_boxs.clear();
   }
   
-  pub fn _get_widget_details(&self) -> (String, Vector2<f32>, Vector2<f32>, Vector4<f32>) {
+  pub fn get_widget_details(&self) -> (String, Vector2<f32>, Vector2<f32>, Vector4<f32>) {
     let name = self._name.to_string();
     let position = self.position;
     let size = self.size;
@@ -181,11 +181,11 @@ impl Widget {
     (name, position, size, colour)
   }
   
-  pub fn _get_widget_position(&self) -> Vector2<f32> {
+  pub fn get_widget_position(&self) -> Vector2<f32> {
     self.position
   }
   
-  pub fn _get_widget_size(&self) -> Vector2<f32> {
+  pub fn get_widget_size(&self) -> Vector2<f32> {
     self.size
   }
   
@@ -197,11 +197,11 @@ impl Widget {
     self.hidden = false;
   }
   
-  pub fn _is_hidden(&self) -> bool {
+  pub fn is_hidden(&self) -> bool {
     self.hidden
   }
   
-  pub fn _get_widget_location(&self) -> Vector2<f32> {
+  pub fn get_widget_location(&self) -> Vector2<f32> {
     (self.position-self.size*0.5)
   }
   
@@ -212,14 +212,14 @@ impl Widget {
   // DROPDOWN BOX
   //
   
-  pub fn _get_selected_dropdown_box_option_i(&self, dropdown_box_set: usize) -> String {
-    self.dropdown_boxs[dropdown_box_set]._get_selected_name()
+  pub fn get_selected_dropdown_box_option_i(&self, dropdown_box_set: usize) -> String {
+    self.dropdown_boxs[dropdown_box_set].get_selected_name()
   }
   
-  pub fn _get_dropdown_box_by_name(&self, name: &String) -> Option<DropdownBox> {
+  pub fn get_dropdown_box_by_name(&self, name: &String) -> Option<DropdownBox> {
     let mut dropdown_box = None;
     for i in 0..self.dropdown_boxs.len() {
-      if self.dropdown_boxs[i]._name_matches(name) {
+      if self.dropdown_boxs[i].name_matches(name) {
         dropdown_box = Some(self.dropdown_boxs[i].clone());
         break;
       }
@@ -227,9 +227,9 @@ impl Widget {
     dropdown_box
   }
   
-  pub fn _set_dropdown_box_by_name_selected_option_by_index(&mut self, name: &String, index: usize) {
+  pub fn set_dropdown_box_by_name_selected_option_by_index(&mut self, name: &String, index: usize) {
     for dropdown in &mut self.dropdown_boxs {
-      if dropdown._name_matches(name) {
+      if dropdown.name_matches(name) {
         dropdown.set_selected_button_by_index(index);
         break;
       }
@@ -240,7 +240,7 @@ impl Widget {
   // TEXTFIELD
   //
   
-  pub fn _is_touching_any_textfield(&self, at_location: Vector2<f32>) -> (bool, usize) {
+  pub fn is_touching_any_textfield(&self, at_location: Vector2<f32>) -> (bool, usize) {
     let mut is_touching = false;
     let mut i = 0;
     for text in &self.text_fields {
@@ -254,7 +254,7 @@ impl Widget {
     (is_touching, i)
   }
   
-  pub fn _update_textfield_location(&mut self, name: &String, pos: Vector2<f32>) {
+  pub fn update_textfield_location(&mut self, name: &String, pos: Vector2<f32>) {
     let pos = pos;
     for text in &mut self.text_fields {
       if text.name_matches(name) {
@@ -273,23 +273,23 @@ impl Widget {
     }
   }
   
-  pub fn _update_text_field_by_index(&mut self, index: usize, new_text: String) {
+  pub fn update_text_field_by_index(&mut self, index: usize, new_text: String) {
     self.text_fields[index].update_text(new_text);
   }
   
-  pub fn _set_textfield_name(&mut self, name: &String, new_name: &String) {
+  pub fn set_textfield_name(&mut self, name: &String, new_name: &String) {
     for text in &mut self.text_fields {
       if text.name_matches(name) {
-        text._set_name(new_name);
+        text.set_name(new_name);
         break;
       }
     }
   }
   
-  pub fn _set_textfield_text_size(&mut self, name: &String, size: Vector2<f32>) {
+  pub fn set_textfield_text_size(&mut self, name: &String, size: Vector2<f32>) {
     for text in &mut self.text_fields {
       if text.name_matches(name) {
-        text._set_text_size(size);
+        text.set_text_size(size);
         break;
       }
     }
@@ -307,26 +307,26 @@ impl Widget {
     text
   }
   
-  pub fn _get_textfield_by_index(&mut self, index: usize) -> TextField {
+  pub fn get_textfield_by_index(&mut self, index: usize) -> TextField {
     self.text_fields[index].clone()
   }
   
-  pub fn _set_textfield_colour(&mut self, name: &String, text_colour: Vector4<f32>) {
+  pub fn set_textfield_colour(&mut self, name: &String, text_colour: Vector4<f32>) {
     for text in &mut self.text_fields {
       if text.name_matches(name) {
-        text._set_colour(text_colour);
+        text.set_colour(text_colour);
         break;
       }
     }
   }
   
-  pub fn _add_textfield(&mut self, name: String, relative_position: Vector2<f32>, size: Vector2<f32>, colour: Vector4<f32>, centered: bool, text: String, font: String) {
+  pub fn add_textfield(&mut self, name: String, relative_position: Vector2<f32>, size: Vector2<f32>, colour: Vector4<f32>, centered: bool, text: String, font: String) {
     let pos = (self.position-self.size*0.5) + relative_position;
     self.text_fields.push(TextField::new_text_field(name, pos, size, colour, centered, text, font));
   }
   
   
-  pub fn _remove_textfield(&mut self, name: &String) {
+  pub fn remove_textfield(&mut self, name: &String) {
     for i in 0..self.text_fields.len() {
       if self.text_fields[i].name_matches(name) {
         self.text_fields.remove(i);
@@ -335,17 +335,17 @@ impl Widget {
     }
   }
   
-  pub fn _duplicate_textfield(&mut self, textfield_to_duplicate: &String, new_textfield_name: &String) {
+  pub fn duplicate_textfield(&mut self, textfield_to_duplicate: &String, new_textfield_name: &String) {
     for i in 0..self.text_fields.len() {
       if self.text_fields[i].name_matches(textfield_to_duplicate) {
         let mut text = self.text_fields[i].clone();
-        text._set_name(new_textfield_name);
+        text.set_name(new_textfield_name);
         self.text_fields.push(text);
       }
     }
   }
   
-  pub fn _textfield_exists(&self, name: &String) -> bool {
+  pub fn textfield_exists(&self, name: &String) -> bool {
     let mut exists = false;
     for text in &self.text_fields {
       if text.name_matches(name) {
@@ -356,7 +356,7 @@ impl Widget {
     exists
   }
   
-  pub fn _textfield_name_exists(&self, name: &String) -> bool {
+  pub fn textfield_name_exists(&self, name: &String) -> bool {
     let mut name_exists = false;
     for text in &self.text_fields {
       if text.name_matches(name) {
@@ -367,11 +367,24 @@ impl Widget {
     name_exists
   }
   
+  pub fn set_textfield_hidden(&mut self, name: &String, hide: bool) {
+    for text in &mut self.text_fields {
+      if text.name_matches(name) {
+        if hide {
+          text.hide();
+        } else {
+          text.show();
+        }
+        break;
+      }
+    }
+  }
+  
   // 
   // BUTTON
   //
   
-  pub fn _is_touching_any_button(&self, at_location: Vector2<f32>) -> (bool, usize) {
+  pub fn is_touching_any_button(&self, at_location: Vector2<f32>) -> (bool, usize) {
     let mut is_touching = false;
     let mut i = 0;
     for button in &self.buttons {
@@ -384,16 +397,29 @@ impl Widget {
     (is_touching, i)
   }
   
-  pub fn _set_button_colour(&mut self, name: &String, pressed: Vector4<f32>, unpressed: Vector4<f32>) {
+  pub fn set_button_hidden(&mut self, name: &String, hide: bool) {
     for button in &mut self.buttons {
       if button.name_matches(name) {
-        button._set_colour(pressed, unpressed);
+        if hide {
+          button.hide();
+        } else {
+          button.show();
+        }
         break;
       }
     }
   }
   
-  pub fn _update_button_location(&mut self, name: &String, pos: Vector2<f32>) {
+  pub fn set_button_colour(&mut self, name: &String, pressed: Vector4<f32>, unpressed: Vector4<f32>) {
+    for button in &mut self.buttons {
+      if button.name_matches(name) {
+        button.set_colour(pressed, unpressed);
+        break;
+      }
+    }
+  }
+  
+  pub fn update_button_location(&mut self, name: &String, pos: Vector2<f32>) {
     let pos = pos;
     for button in &mut self.buttons {
       if button.name_matches(name) {
@@ -403,16 +429,25 @@ impl Widget {
     }
   }
   
-  pub fn _stop_updating_button(&mut self, name: &String) {
+  pub fn start_updating_button(&mut self, name: &String) {
     for i in 0..self.buttons.len() {
       if self.buttons[i].name_matches(name) {
-        self.buttons[i]._stop_updating();
+        self.buttons[i].start_updating();
         break;
       }
     }
   }
   
-  pub fn _add_button(&mut self, relative_position: Vector2<f32>, button_size: Vector2<f32>, 
+  pub fn stop_updating_button(&mut self, name: &String) {
+    for i in 0..self.buttons.len() {
+      if self.buttons[i].name_matches(name) {
+        self.buttons[i].stop_updating();
+        break;
+      }
+    }
+  }
+  
+  pub fn add_button(&mut self, relative_position: Vector2<f32>, button_size: Vector2<f32>, 
                      text_relative_position: Vector2<f32>, text_size: Vector2<f32>, 
                      name: String, text_colour: Vector4<f32>, pressed_button: Vector4<f32>, 
                      unpressed_button: Vector4<f32>, center_text: bool, text: String, font: String) {
@@ -420,7 +455,7 @@ impl Widget {
     self.buttons.push(Button::new_button(name, pos, button_size, text_relative_position, text_size, text_colour, pressed_button, unpressed_button, false, center_text, text, font));
   }
   
-  pub fn _remove_button(&mut self, name: &String) {
+  pub fn remove_button(&mut self, name: &String) {
     for i in 0..self.buttons.len() {
       if self.buttons[i].name_matches(name) {
         self.buttons.remove(i);
@@ -429,17 +464,17 @@ impl Widget {
     }
   }
   
-  pub fn _duplicate_button(&mut self, button_to_duplicate: &String, new_button_name: &String) {
+  pub fn duplicate_button(&mut self, button_to_duplicate: &String, new_button_name: &String) {
     for i in 0..self.buttons.len() {
       if self.buttons[i].name_matches(button_to_duplicate) {
         let mut button = self.buttons[i].clone();
-        button._set_name(new_button_name);
+        button.set_name(new_button_name);
         self.buttons.push(button);
       }
     }
   }
   
-  pub fn _get_button_by_index(&mut self, index: usize) -> Button {
+  pub fn get_button_by_index(&mut self, index: usize) -> Button {
     self.buttons[index].clone()
   }
   
@@ -453,7 +488,7 @@ impl Widget {
     pressed
   }
   
-  pub fn _set_button_state(&mut self, button_name: &String, new_state: bool) {
+  pub fn set_button_state(&mut self, button_name: &String, new_state: bool) {
     for button in &mut self.buttons {
       if button.name_matches(button_name) {
         if new_state {
@@ -465,7 +500,7 @@ impl Widget {
     }
   }
   
-  pub fn _button_exists(&self, name: &String) -> bool {
+  pub fn button_exists(&self, name: &String) -> bool {
     let mut exists = false;
     for button in &self.buttons {
       if button.name_matches(name) {
@@ -480,19 +515,19 @@ impl Widget {
   // SLIDER
   //
   
-  pub fn _set_slider_value(&mut self, name: &String, new_value: f32) {
+  pub fn set_slider_value(&mut self, name: &String, new_value: f32) {
     for slider in &mut self.sliders {
-      if slider._name_matches(&name) {
+      if slider.name_matches(&name) {
         slider.set_value(new_value);
         break;
       }
     }
   }
   
-  pub fn _get_slider_value(&self, name: &String) -> Option<f32> {
+  pub fn get_slider_value(&self, name: &String) -> Option<f32> {
     let mut value = None;
     for slider in &self.sliders {
-      if slider._name_matches(name) {
+      if slider.name_matches(name) {
         value = Some(slider.get_value());
         break;
       }
@@ -504,12 +539,12 @@ impl Widget {
   // SELECTION
   //
   
-  pub fn _get_selected_option_i(&self, selection_set: usize) -> Option<String> {
+  pub fn get_selected_option_i(&self, selection_set: usize) -> Option<String> {
     self.selections[selection_set].get_selected_option()
   }
   
-  pub fn _is_touching_selection_option_i_button_j(&self, selection_set: usize, button_index: usize, against: Vector2<f32>) -> bool {
-    self.selections[selection_set]._is_touching_button(button_index, against)
+  pub fn is_touching_selection_option_i_button_j(&self, selection_set: usize, button_index: usize, against: Vector2<f32>) -> bool {
+    self.selections[selection_set].is_touching_button(button_index, against)
   }
   
   //
@@ -559,7 +594,7 @@ impl Widget {
     }
   }
   
-  pub fn _get_all(&self) -> (Vec<TextField>, Vec<Button>, Vec<Selection>, Vec<Slider>, Vec<DropdownBox>) {
+  pub fn get_all(&self) -> (Vec<TextField>, Vec<Button>, Vec<Selection>, Vec<Slider>, Vec<DropdownBox>) {
     let text_fields = self.text_fields.clone();
     let buttons = self.buttons.clone();
     let selections = self.selections.clone();
@@ -569,15 +604,15 @@ impl Widget {
   }
   
   
-  pub fn _textfields_pop(&mut self) {
+  pub fn textfields_pop(&mut self) {
     self.text_fields.pop();
   }
   
-  pub fn _buttons_pop(&mut self) {
+  pub fn buttons_pop(&mut self) {
     self.buttons.pop();
   }
   
-  pub fn _selections_pop(&mut self) {
+  pub fn selections_pop(&mut self) {
     self.selections.pop();
   }
 }
