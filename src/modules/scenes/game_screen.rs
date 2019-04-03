@@ -20,6 +20,8 @@ pub struct GameScreen {
   game_speed: f32,
   ui: ClickUi,
   auto_ui: AutoUi,
+  cloud_offset: f32,
+  stage: i32,
 }
 
 impl GameScreen {
@@ -35,10 +37,12 @@ impl GameScreen {
       game_speed: 1.0,
       ui: ClickUi::new(window_size),
       auto_ui: AutoUi::new(window_size),
+      cloud_offset: 0.0,
+      stage: 1,
     }
   }
   
-  pub fn new_with_data(window_size: Vector2<f32>, rng: rand::prelude::ThreadRng, model_sizes: Vec<(String, Vector3<f32>)>, game_speed: f32, ui: ClickUi, auto_ui: AutoUi) -> GameScreen {
+  pub fn new_with_data(window_size: Vector2<f32>, rng: rand::prelude::ThreadRng, model_sizes: Vec<(String, Vector3<f32>)>, game_speed: f32, ui: ClickUi, auto_ui: AutoUi, stage: i32) -> GameScreen {
     GameScreen {
       data: SceneData::new(window_size, model_sizes),
       rng,
@@ -47,6 +51,8 @@ impl GameScreen {
       game_speed,
       ui,
       auto_ui,
+      cloud_offset: 0.0,
+      stage,
     }
   }
   
@@ -133,6 +139,7 @@ impl GameScreen {
       }
     }
     
+    
     if self.ui.fv_count() >= 5 {
       self.auto_ui.show_land_option();
     }
@@ -170,6 +177,68 @@ impl GameScreen {
     if self.data.window_resized {
       self.data.next_scene = true;
     }
+    
+    self.cloud_offset += 50.0*delta_time;
+    if self.cloud_offset >= 6400.0 {
+      self.cloud_offset = 0.0;
+    }
+    
+   match self.stage {
+     7 => {
+       if self.ui.large_buffet_count() >= 5 {
+         self.stage += 1;
+       }
+     },
+     6 => {
+       if self.ui.regular_buffet_count() >= 5 {
+         self.stage += 1;
+       }
+     },
+     5 => {
+       if self.ui.small_buffet_count() >= 5 {
+         self.stage += 1;
+       }
+     },
+     4 => {
+       if self.ui.meal_count() >= 5 {
+         self.stage += 1;
+       }
+     },
+     3 => {
+       if self.ui.cooked_fv_count() >= 5 {
+         self.stage += 1;
+       }
+     },
+     2 => {
+       if self.ui.chopped_fv_count() >= 5 {
+         self.stage += 1;
+       }
+     },
+     1 => {
+       if self.ui.fv_count() >= 5 {
+         self.stage += 1;
+       }
+     },
+     _ => {}
+    }
+  }
+  
+  pub fn cloud_overlay(&self, draw_calls: &mut Vec<DrawCall>) {
+    let width = self.data.window_dim.x;
+    let height = self.data.window_dim.y;
+    /*
+    draw_calls.push(
+      DrawCall::draw_textured(Vector2::new(width-width*0.25-3200.0*0.5 + 320.0 + self.cloud_offset, height-height*0.5*1.0/3.0), 
+                              Vector2::new(3200.0, height*1.0/3.0),
+                              90.0,
+                              String::from("CloudOverlay"))
+    );
+    draw_calls.push(
+      DrawCall::draw_textured(Vector2::new(width-width*0.25-3200.0*1.5 + 320.0 + self.cloud_offset, height-height*0.5*1.0/3.0), 
+                              Vector2::new(3200.0, height*1.0/3.0),
+                              90.0,
+                              String::from("CloudOverlay"))
+    );*/
   }
 }
 
@@ -184,7 +253,7 @@ impl Scene for GameScreen {
   
   fn future_scene(&mut self, window_size: Vector2<f32>) -> Box<Scene> {
     if self.data().window_resized {
-      Box::new(GameScreen::new_with_data(window_size, self.rng.clone(), self.data.model_sizes.clone(), self.game_speed, self.ui.clone(), self.auto_ui.clone()))
+      Box::new(GameScreen::new_with_data(window_size, self.rng.clone(), self.data.model_sizes.clone(), self.game_speed, self.ui.clone(), self.auto_ui.clone(), self.stage))
     } else {
       Box::new(GameScreen::new(window_size, self.data.model_sizes.clone()))
     }
@@ -198,10 +267,51 @@ impl Scene for GameScreen {
     
     self.update_ui(delta_time);
     
+    self.update_neutral(real_delta, delta_time);
+    
     self._update_keypresses(real_delta);
   }
   
   fn draw(&self, draw_calls: &mut Vec<DrawCall>) {
+    
+    let width = self.data().window_dim.x;
+    let height = self.data().window_dim.y;
+    
+    let mut texture = String::from("Stage1");
+    match self.stage {
+      8 => {
+        texture = String::from("Stage8");
+      },
+      7 => {
+        texture = String::from("Stage7");
+      },
+      6 => {
+       texture = String::from("Stage6");
+      },
+      5 => {
+        texture = String::from("Stage5");
+      },
+      4 => {
+        texture = String::from("Stage4");
+      },
+      3 => {
+        texture = String::from("Stage3");
+      },
+      2 => {
+        texture = String::from("Stage2");
+      },
+      _ => {},
+    }
+    
+    draw_calls.push(
+      DrawCall::draw_textured(Vector2::new(width-width*0.25, height-height*0.5*1.0/3.0), 
+                              Vector2::new(width*0.5, height*1.0/3.0),
+                              90.0,
+                              texture)
+    );
+    
+    self.cloud_overlay(draw_calls);
+    
     self.ui.draw(draw_calls);
     self.auto_ui.draw(draw_calls);
   }

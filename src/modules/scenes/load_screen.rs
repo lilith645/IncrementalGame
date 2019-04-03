@@ -61,7 +61,15 @@ impl Scene for LoadScreen {
     let (width, height) = (dim.x as f32, dim.y as f32);
     
     if self.first_loop {
-      
+      draw_calls.push(DrawCall::load_texture("Stage1".to_string()));
+      draw_calls.push(DrawCall::load_texture("Stage2".to_string()));
+      draw_calls.push(DrawCall::load_texture("Stage3".to_string()));
+      draw_calls.push(DrawCall::load_texture("Stage4".to_string()));
+      draw_calls.push(DrawCall::load_texture("Stage5".to_string()));
+      draw_calls.push(DrawCall::load_texture("Stage6".to_string()));
+      draw_calls.push(DrawCall::load_texture("Stage7".to_string()));
+      draw_calls.push(DrawCall::load_texture("Stage8".to_string()));
+      draw_calls.push(DrawCall::load_texture("CloudOverlay".to_string()));
     }
     
     draw_calls.push(DrawCall::set_texture_scale(1.0));

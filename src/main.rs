@@ -52,13 +52,33 @@ fn fps_overlay(draw_calls: &mut Vec<DrawCall>, dimensions: [f32; 2], fps: f64) {
 }
 
 fn main() {
-  let mut graphics = CoreMaat::new("Delinquent Food".to_string(), (MAJOR) << 22 | (MINOR) << 12 | (PATCH), 1280.0, 720.0, true);
+  let mut graphics = CoreMaat::new("Incremental Escape Kitchen".to_string(), (MAJOR) << 22 | (MINOR) << 12 | (PATCH), 1280.0, 720.0, true);
   
   graphics.preload_font(String::from("Arial"),
                         String::from("./resources/Fonts/TimesNewRoman.png"),
                         include_bytes!("../resources/Fonts/TimesNewRoman.fnt"));
   graphics.preload_texture(String::from("Logo"), 
                            String::from("./resources/Textures/Logo.png"));
+  
+  graphics.add_texture(String::from("Stage1"),
+                       String::from("./resources/Textures/Stages/Stage1.png"));
+  graphics.add_texture(String::from("Stage2"),
+                       String::from("./resources/Textures/Stages/Stage2.png"));
+  graphics.add_texture(String::from("Stage3"),
+                       String::from("./resources/Textures/Stages/Stage3.png"));
+  graphics.add_texture(String::from("Stage4"),
+                       String::from("./resources/Textures/Stages/Stage4.png"));
+  graphics.add_texture(String::from("Stage5"),
+                       String::from("./resources/Textures/Stages/Stage5.png"));
+  graphics.add_texture(String::from("Stage6"),
+                       String::from("./resources/Textures/Stages/Stage6.png"));
+  graphics.add_texture(String::from("Stage7"),
+                       String::from("./resources/Textures/Stages/Stage7.png"));
+  graphics.add_texture(String::from("Stage8"),
+                       String::from("./resources/Textures/Stages/Stage8.png"));
+  graphics.add_texture(String::from("CloudOverlay"),
+                       String::from("./resources/Textures/Stages/CloudOverlay.png"));
+  
   
   graphics.load_shaders();
   graphics.init();
