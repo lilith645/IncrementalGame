@@ -13,9 +13,11 @@ use cgmath::{Vector2, Vector3};
 
 pub use self::load_screen::LoadScreen;
 pub use self::game_screen::GameScreen;
+pub use self::intro_screen::IntroScreen;
 
 mod load_screen;
 mod game_screen;
+mod intro_screen;
 
 pub struct SceneData {
   pub should_close: bool,

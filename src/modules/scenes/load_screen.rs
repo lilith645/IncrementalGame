@@ -2,7 +2,7 @@ use maat_graphics::DrawCall;
 
 use crate::modules::scenes::Scene;
 use crate::modules::scenes::SceneData;
-use crate::modules::scenes::GameScreen;
+use crate::modules::scenes::IntroScreen;
 
 use cgmath::{Vector2, Vector3, Vector4};
 
@@ -18,7 +18,6 @@ pub struct LoadScreen {
 
 impl LoadScreen {
   pub fn new() -> LoadScreen {
-    println!("Load Screen");
     LoadScreen {
       data: SceneData::new_default(),
       alpha: 0.0,
@@ -39,7 +38,7 @@ impl Scene for LoadScreen {
   }
   
   fn future_scene(&mut self, window_size: Vector2<f32>) -> Box<Scene> {
-    Box::new(GameScreen::new(window_size, self.data.model_sizes.clone()))
+    Box::new(IntroScreen::new(window_size, self.data.model_sizes.clone()))
   }
   
   fn update(&mut self, delta_time: f32) {

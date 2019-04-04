@@ -46,7 +46,7 @@ fn fps_overlay(draw_calls: &mut Vec<DrawCall>, dimensions: [f32; 2], fps: f64) {
   
   draw_calls.push(DrawCall::draw_text_basic(Vector2::new(32.0, dimensions[1]-32.0), 
                                            Vector2::new(64.0, 64.0), 
-                                           Vector4::new(1.0, 1.0, 1.0, 1.0), 
+                                           Vector4::new(0.0, 0.0, 0.0, 1.0), 
                                            "fps: ".to_string() + &fps, 
                                            "Arial".to_string()));
 }

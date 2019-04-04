@@ -26,7 +26,6 @@ pub struct GameScreen {
 
 impl GameScreen {
   pub fn new(window_size: Vector2<f32>, model_sizes: Vec<(String, Vector3<f32>)>) -> GameScreen {
-    println!("Game Screen");
     let mut rng =  thread_rng();
     
     GameScreen {
@@ -314,5 +313,8 @@ impl Scene for GameScreen {
     
     self.ui.draw(draw_calls);
     self.auto_ui.draw(draw_calls);
+    
+    draw_calls.push(DrawCall::draw_coloured(Vector2::new(width*0.75, height*2.0/3.0), Vector2::new(width*0.5, 10.0), Vector4::new(0.0, 0.0, 0.0, 1.0), 90.0));
+    draw_calls.push(DrawCall::draw_coloured(Vector2::new(width*0.5, height*0.5), Vector2::new(10.0, height), Vector4::new(0.0, 0.0, 0.0, 1.0), 90.0));
   }
 }

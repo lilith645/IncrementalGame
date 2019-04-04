@@ -27,13 +27,13 @@ const LARGE_B_BUTTON_NAME: &str = "LargeBVB";
 const LARGE_B_TEXTFIELD_NAME: &str = "LargeBTF";
 
 const SEED_TIMER: f32 = 0.1;
-const FV_TIMER: f32 = 0.2;
-const CHOPPED_TIMER: f32 = 0.4;
-const COOKED_TIMER: f32 = 0.8;
-const MEAL_TIMER: f32 = 1.6;
-const SMALL_B_TIMER: f32 = 3.2;
-const REGULAR_B_TIMER: f32 = 6.4;
-const LARGE_B_TIMER: f32 = 1.28;
+const FV_TIMER: f32 = 0.1;//0.2;
+const CHOPPED_TIMER: f32 = 0.1;//0.4;
+const COOKED_TIMER: f32 = 0.1;//0.8;
+const MEAL_TIMER: f32 = 0.1;//1.6;
+const SMALL_B_TIMER: f32 = 0.1;//3.2;
+const REGULAR_B_TIMER: f32 = 0.1;//6.4;
+const LARGE_B_TIMER: f32 = 0.1;//1.28;
 
 #[derive(Clone)]
 pub struct ClickUi {
@@ -72,12 +72,13 @@ impl ClickUi {
     
     let text_colour = Vector4::new(0.0, 0.0, 0.0, 1.0);
     let button_colour = Vector4::new(0.211372549, 0.385490196, 0.684313725, 1.0);
+    let can_buy_colour = Vector4::new(0.0,0.0, 1.0, 1.0);
     let pressed_colour = Vector4::new(0.2, 0.2, 0.2, 1.0);
     let button_size = Vector2::new(button_width, button_height);
-    let text_size = Vector2::new(96.0, 96.0);
+    let text_size = Vector2::new(80.0, 80.0);
     let text_offset = Vector2::new(button_width*0.5, button_height*0.2);
     
-    let resource_x = widget_size.x - button_width*1.5;
+    let resource_x = widget_size.x - button_width*1.2;
     let resource_start_y = button_start_y - 15.0;
     
     let button_y_offset = button_height*2.0;
@@ -103,12 +104,16 @@ impl ClickUi {
                                   text_size, 
                                   text_colour, 
                                   "Seeds: 0".to_string(), "Arial".to_string())
-                 
+                 .with_text_field_centered("a".to_string(), 
+                                  Vector2::new(resource_x-button_width*1.5, resource_start_y - button_y_offset), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "1 Click".to_string(), "Arial".to_string())
                  // Fruit and Veg
                  .with_button(Vector2::new(button_width*1.0, button_start_y - button_y_offset*2.0),
                               button_size,
                               text_offset, 
-                              text_size,
+                              text_size*0.65,
                               FV_BUTTON_NAME.to_string(), 
                               text_colour, 
                               pressed_colour,
@@ -119,7 +124,11 @@ impl ClickUi {
                                   text_size, 
                                   text_colour, 
                                   "Fruit & Veg (FV): 0".to_string(), "Arial".to_string())
-                
+                .with_text_field_centered("b".to_string(), 
+                                  Vector2::new(resource_x-button_width*1.5, resource_start_y - button_y_offset*2.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "10 seeds".to_string(), "Arial".to_string())
                 // Chopped FV
                  .with_button(Vector2::new(button_width*1.0, button_start_y - button_y_offset*3.0),
                               button_size,
@@ -135,7 +144,11 @@ impl ClickUi {
                                   text_size, 
                                   text_colour, 
                                   "Chopped FV: 0".to_string(), "Arial".to_string())
-                                  
+                 .with_text_field_centered("c".to_string(), 
+                                  Vector2::new(resource_x-button_width*1.5, resource_start_y - button_y_offset*3.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "10 FV".to_string(), "Arial".to_string())
                 // Cooked FV
                  .with_button(Vector2::new(button_width*1.0, button_start_y - button_y_offset*4.0),
                               button_size,
@@ -151,7 +164,11 @@ impl ClickUi {
                                   text_size, 
                                   text_colour, 
                                   "Cooked FV: 0".to_string(), "Arial".to_string())
-                
+                .with_text_field_centered("d".to_string(), 
+                                  Vector2::new(resource_x-button_width*1.5, resource_start_y - button_y_offset*4.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "10 Chopped FV".to_string(), "Arial".to_string())
                 // Meal
                  .with_button(Vector2::new(button_width*1.0, button_start_y - button_y_offset*5.0),
                               button_size,
@@ -167,52 +184,71 @@ impl ClickUi {
                                   text_size, 
                                   text_colour, 
                                   "Meals: 0".to_string(), "Arial".to_string())
+                .with_text_field_centered("e".to_string(), 
+                                  Vector2::new(resource_x-button_width*1.5, resource_start_y - button_y_offset*5.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "10 Cooked FV".to_string(), "Arial".to_string())
                 // Small buffet
                 .with_button(Vector2::new(button_width*1.0, button_start_y - button_y_offset*6.0),
                               button_size,
                               text_offset, 
-                              text_size,
+                              text_size*0.8,
                               SMALL_B_BUTTON_NAME.to_string(), 
                               text_colour, 
                               pressed_colour,
                               button_colour,
-                              true, "Create Small Buffet".to_string(), "Arial".to_string())
+                              true, "Small Buffet".to_string(), "Arial".to_string())
                 .with_text_field_centered(SMALL_B_TEXTFIELD_NAME.to_string(), 
                                   Vector2::new(resource_x, resource_start_y - button_y_offset*6.0), 
                                   text_size, 
                                   text_colour, 
                                   "Small buffets: 0".to_string(), "Arial".to_string())
+                .with_text_field_centered("f".to_string(), 
+                                  Vector2::new(resource_x-button_width*1.5, resource_start_y - button_y_offset*6.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "10 Meals".to_string(), "Arial".to_string())
                 // Regular buffet
                 .with_button(Vector2::new(button_width*1.0, button_start_y - button_y_offset*7.0),
                               button_size,
                               text_offset, 
-                              text_size,
+                              text_size*0.8,
                               REGULAR_B_BUTTON_NAME.to_string(), 
                               text_colour, 
                               pressed_colour,
                               button_colour,
-                              true, "Create Regular Buffet".to_string(), "Arial".to_string())
+                              true, "Regular Buffet".to_string(), "Arial".to_string())
                 .with_text_field_centered(REGULAR_B_TEXTFIELD_NAME.to_string(), 
                                   Vector2::new(resource_x, resource_start_y - button_y_offset*7.0), 
                                   text_size, 
                                   text_colour, 
                                   "Regular buffets: 0".to_string(), "Arial".to_string())
-                
+                .with_text_field_centered("g".to_string(), 
+                                  Vector2::new(resource_x-button_width*1.5, resource_start_y - button_y_offset*7.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "10 Small Buffets".to_string(), "Arial".to_string())
                 // Large buffet
                 .with_button(Vector2::new(button_width*1.0, button_start_y - button_y_offset*8.0),
                               button_size,
                               text_offset, 
-                              text_size,
+                              text_size*0.8,
                               LARGE_B_BUTTON_NAME.to_string(), 
                               text_colour, 
                               pressed_colour,
                               button_colour,
-                              true, "Create Large Buffet".to_string(), "Arial".to_string())
+                              true, "Large Buffet".to_string(), "Arial".to_string())
                 .with_text_field_centered(LARGE_B_TEXTFIELD_NAME.to_string(), 
                                   Vector2::new(resource_x, resource_start_y - button_y_offset*8.0), 
                                   text_size, 
                                   text_colour, 
                                   "Large buffets: 0".to_string(), "Arial".to_string())
+                .with_text_field_centered("h".to_string(), 
+                                  Vector2::new(resource_x-button_width*1.5, resource_start_y - button_y_offset*8.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "10 Regular Buffets".to_string(), "Arial".to_string())
                 );
     
     widgets[MAIN_WINDOW_INDEX].set_button_hidden(&FV_BUTTON_NAME.to_string(), true);
@@ -229,6 +265,13 @@ impl ClickUi {
     widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&REGULAR_B_TEXTFIELD_NAME.to_string(), true);
     widgets[MAIN_WINDOW_INDEX].set_button_hidden(&LARGE_B_BUTTON_NAME.to_string(), true);
     widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&LARGE_B_TEXTFIELD_NAME.to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"b".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"c".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"d".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"e".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"f".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"g".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"h".to_string(), true);
     
     ClickUi {
       hidden: true,
@@ -435,30 +478,37 @@ impl ClickUi {
     if self.seeds >= 10 {
       self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&FV_BUTTON_NAME.to_string(), false);
       self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&FV_TEXTFIELD_NAME.to_string(), false);
+      self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"b".to_string(), false);
     }
     if self.fv >= 10 {
       self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&CHOPPED_BUTTON_NAME.to_string(), false);
       self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&CHOPPED_TEXTFIELD_NAME.to_string(), false);
+      self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"c".to_string(), false);
     }
     if self.chopped_fv >= 10 {
       self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&COOKED_BUTTON_NAME.to_string(), false);
       self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&COOKED_TEXTFIELD_NAME.to_string(), false);
+      self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"d".to_string(), false);
     }
     if self.cooked_fv >= 10 {
       self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&MEAL_BUTTON_NAME.to_string(), false);
       self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&MEAL_TEXTFIELD_NAME.to_string(), false);
+      self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"e".to_string(), false);
     }
     if self.meals >= 10 {
       self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&SMALL_B_BUTTON_NAME.to_string(), false);
       self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&SMALL_B_TEXTFIELD_NAME.to_string(), false);
+      self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"f".to_string(), false);
     }
     if self.small_buffet >= 10 {
       self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&REGULAR_B_BUTTON_NAME.to_string(), false);
       self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&REGULAR_B_TEXTFIELD_NAME.to_string(), false);
+      self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"g".to_string(), false);
     }
     if self.regular_buffet >= 10 {
       self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&LARGE_B_BUTTON_NAME.to_string(), false);
       self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&LARGE_B_TEXTFIELD_NAME.to_string(), false);
+      self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"h".to_string(), false);
     }
     
     self.widgets[MAIN_WINDOW_INDEX].update_text_field(&FV_TEXTFIELD_NAME.to_string(), "Fruit & Veg (FV): ".to_owned() + &self.fv.to_string());

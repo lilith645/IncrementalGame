@@ -79,6 +79,7 @@ impl AutoUi {
     let button_x = widget_size.x -64.0;
     let button_start_y = widget_size.y*0.9;
     
+    let can_buy_colour = Vector4::new(0.0,0.0, 1.0, 1.0);
     let text_colour = Vector4::new(0.0, 0.0, 0.0, 1.0);
     let button_colour = Vector4::new(0.211372549, 0.385490196, 0.684313725, 1.0);
     let pressed_colour = Vector4::new(0.2, 0.2, 0.2, 1.0);
@@ -86,7 +87,7 @@ impl AutoUi {
     let text_size = Vector2::new(80.0, 80.0);
     let text_offset = Vector2::new(button_width*0.5, 6.0);
     
-    let resource_x = widget_size.x * 0.5;
+    let resource_x = widget_size.x * 0.52;
     
     let text_y_offset = 10.0;
     let button_y_offset = button_height*2.0;
@@ -112,6 +113,11 @@ impl AutoUi {
                               pressed_colour,
                               button_colour,
                               true, "+".to_string(), "Arial".to_string())
+                .with_text_field("a".to_string(), 
+                                  Vector2::new(button_width*0.5, button_start_y), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "5 FV".to_string(), "Arial".to_string())
                 //Farmer level
                 .with_text_field_centered(FV_LVL_TEXTFIELD_NAME.to_string(), 
                                   Vector2::new(resource_x, button_start_y - button_y_offset), 
@@ -127,7 +133,11 @@ impl AutoUi {
                               pressed_colour,
                               button_colour,
                               true, "+".to_string(), "Arial".to_string())
-                
+                .with_text_field("b".to_string(), 
+                                  Vector2::new(button_width*0.5, button_start_y- button_y_offset), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "5 Chopped FV".to_string(), "Arial".to_string())
                 // Chef
                 .with_text_field_centered(CHOPPED_FV_LVL_TEXTFIELD_NAME.to_string(), 
                                   Vector2::new(resource_x, button_start_y - button_y_offset*2.0), 
@@ -143,7 +153,11 @@ impl AutoUi {
                               pressed_colour,
                               button_colour,
                               true, "+".to_string(), "Arial".to_string())
-
+                .with_text_field("c".to_string(), 
+                                  Vector2::new(button_width*0.5, button_start_y- button_y_offset*2.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "5 Cooked FV".to_string(), "Arial".to_string())
                 // cook
                  .with_text_field_centered(COOKED_FV_LVL_TEXTFIELD_NAME.to_string(), 
                                   Vector2::new(resource_x, button_start_y - button_y_offset*3.0), 
@@ -159,6 +173,11 @@ impl AutoUi {
                               pressed_colour,
                               button_colour,
                               true, "+".to_string(), "Arial".to_string())
+                .with_text_field("d".to_string(), 
+                                  Vector2::new(button_width*0.5, button_start_y- button_y_offset*3.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "5 Meals".to_string(), "Arial".to_string())
                 //Waiters
                 .with_text_field_centered(MEAL_LVL_TEXTFIELD_NAME.to_string(), 
                                   Vector2::new(resource_x, button_start_y - button_y_offset*4.0), 
@@ -174,7 +193,11 @@ impl AutoUi {
                             pressed_colour,
                             button_colour,
                             true, "+".to_string(), "Arial".to_string())
-              
+                .with_text_field("e".to_string(), 
+                                  Vector2::new(button_width*0.5, button_start_y- button_y_offset*4.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "5 Small Buffets".to_string(), "Arial".to_string())
                 // serving trays
                 .with_text_field_centered(SMALL_B_LVL_TEXTFIELD_NAME.to_string(), 
                                   Vector2::new(resource_x, button_start_y -  button_y_offset*5.0), 
@@ -190,7 +213,11 @@ impl AutoUi {
                               pressed_colour,
                               button_colour,
                               true, "+".to_string(), "Arial".to_string())
-                
+                .with_text_field("f".to_string(), 
+                                  Vector2::new(button_width*0.5, button_start_y- button_y_offset*5.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "5 R Buffets".to_string(), "Arial".to_string())
                 // food servers
                 .with_text_field_centered(REGULAR_B_LVL_TEXTFIELD_NAME.to_string(), 
                                   Vector2::new(resource_x, button_start_y - button_y_offset*6.0), 
@@ -206,7 +233,11 @@ impl AutoUi {
                               pressed_colour,
                               button_colour,
                               true, "+".to_string(), "Arial".to_string())
-                 
+                 .with_text_field("g".to_string(), 
+                                  Vector2::new(button_width*0.5, button_start_y- button_y_offset*6.0), 
+                                  text_size*0.95, 
+                                  can_buy_colour, 
+                                  "5 L Buffets".to_string(), "Arial".to_string())
                 
                 // Catering company
                 .with_text_field_centered(LARGE_B_LVL_TEXTFIELD_NAME.to_string(), 
@@ -242,6 +273,14 @@ impl AutoUi {
     widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&REGULAR_B_LVL_TEXTFIELD_NAME.to_string(), true);
     widgets[MAIN_WINDOW_INDEX].set_button_hidden(&LARGE_B_LVL_BUTTON_NAME.to_string(), true);
     widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&LARGE_B_LVL_TEXTFIELD_NAME.to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"a".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"b".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"c".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"d".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"e".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"f".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"g".to_string(), true);
+    widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"h".to_string(), true);
     
     AutoUi {
       hidden: true,
@@ -316,6 +355,7 @@ impl AutoUi {
   pub fn show_land_option(&mut self) {
     self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&SEED_LVL_BUTTON_NAME.to_string(), false);
     self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&SEED_LVL_TEXTFIELD_NAME.to_string(), false);
+    self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"a".to_string(), false);
   }
   
   pub fn land_lvl_pressed(&self) -> bool {
@@ -330,6 +370,7 @@ impl AutoUi {
   pub fn show_farmer_option(&mut self) {
     self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&FV_LVL_BUTTON_NAME.to_string(), false);
     self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&FV_LVL_TEXTFIELD_NAME.to_string(), false);
+    self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"b".to_string(), false);
   }
   
   pub fn farmer_lvl_pressed(&self) -> bool {
@@ -344,6 +385,7 @@ impl AutoUi {
   pub fn show_chef_option(&mut self) {
     self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&CHOPPED_FV_LVL_BUTTON_NAME.to_string(), false);
     self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&CHOPPED_FV_LVL_TEXTFIELD_NAME.to_string(), false);
+    self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"c".to_string(), false);
   }
   
   pub fn chef_lvl_pressed(&self) -> bool {
@@ -358,6 +400,7 @@ impl AutoUi {
   pub fn show_cook_option(&mut self) {
     self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&COOKED_FV_LVL_BUTTON_NAME.to_string(), false);
     self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&COOKED_FV_LVL_TEXTFIELD_NAME.to_string(), false);
+    self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"d".to_string(), false);
   }
   
   pub fn cook_lvl_pressed(&self) -> bool {
@@ -372,6 +415,7 @@ impl AutoUi {
   pub fn show_waiters_option(&mut self) {
     self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&MEAL_LVL_BUTTON_NAME.to_string(), false);
     self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&MEAL_LVL_TEXTFIELD_NAME.to_string(), false);
+    self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"e".to_string(), false);
   }
   
   pub fn waiter_lvl_pressed(&self) -> bool {
@@ -386,6 +430,7 @@ impl AutoUi {
   pub fn show_serving_trays_option(&mut self) {
     self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&SMALL_B_LVL_BUTTON_NAME.to_string(), false);
     self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&SMALL_B_LVL_TEXTFIELD_NAME.to_string(), false);
+    self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"f".to_string(), false);
   }
   
   pub fn serving_tray_lvl_pressed(&self) -> bool {
@@ -400,6 +445,7 @@ impl AutoUi {
   pub fn show_food_servers_option(&mut self) {
     self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&REGULAR_B_LVL_BUTTON_NAME.to_string(), false);
     self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&REGULAR_B_LVL_TEXTFIELD_NAME.to_string(), false);
+    self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"g".to_string(), false);
   }
   
   pub fn food_servers_lvl_pressed(&self) -> bool {
@@ -414,6 +460,7 @@ impl AutoUi {
   pub fn show_catering_company_option(&mut self) {
     self.widgets[MAIN_WINDOW_INDEX].set_button_hidden(&LARGE_B_LVL_BUTTON_NAME.to_string(), false);
     self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&LARGE_B_LVL_TEXTFIELD_NAME.to_string(), false);
+    self.widgets[MAIN_WINDOW_INDEX].set_textfield_hidden(&"h".to_string(), false);
   }
   
   pub fn catering_company_lvl_pressed(&self) -> bool {
